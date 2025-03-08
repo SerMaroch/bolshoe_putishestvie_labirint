@@ -153,10 +153,10 @@ function расстояние (num3: number) {
 }
 function запомнить_короткий_маршрут () {
     temp = list2[list2.length - 1]
-    if (180 == Math.abs(temp - мой_курс)) {
+    if (180 == Math.abs(temp - course)) {
         list2.pop()
     } else {
-        list2.push(мой_курс)
+        list2.push(course)
     }
 }
 function проехать_вперед_до_перекрестка (num: number) {
@@ -170,27 +170,27 @@ function проехать_вперед_до_перекрестка (num: number)
 }
 function лабиринт_обратно () {
     Полигон_пройден = 0
+    course = 0
     while (!(Полигон_пройден == 1)) {
         if (input.buttonIsPressed(Button.A)) {
             поехали = 0
             break;
         }
-        мой_курс = 0
         temp = list2.pop()
-        if (мой_курс == temp) {
+        if (course == temp) {
             проехать_вперед_до_перекрестка(1240)
         } else {
-            if (temp - мой_курс > 0) {
+            if (temp - course > 0) {
                 StartbitV2.startbit_setMotorSpeed(80, -80)
                 basic.pause(1250)
                 проехать_вперед_до_перекрестка(1240)
-                мой_курс = temp
+                course = temp
             } else {
-                if (temp - мой_курс < 0) {
+                if (temp - course < 0) {
                     StartbitV2.startbit_setMotorSpeed(-80, 80)
                     basic.pause(1250)
                     проехать_вперед_до_перекрестка(1240)
-                    мой_курс = temp
+                    course = temp
                 }
             }
         }
@@ -259,18 +259,18 @@ function Старт () {
     basic.pause(500)
 }
 function изменить_маршрут (num4: number) {
-    мой_курс = мой_курс + num4
-    if (мой_курс < 0) {
-        мой_курс = мой_курс + 360
+    course = course + num4
+    if (course < 0) {
+        course = course + 360
     }
-    if (мой_курс >= 360) {
-        мой_курс = мой_курс - 360
+    if (course >= 360) {
+        course = course - 360
     }
 }
 function лабиринт_туда () {
     Полигон_пройден = 0
     list2 = []
-    list2.push(мой_курс)
+    list2.push(course)
     while (!(Полигон_пройден == 1)) {
         if (input.buttonIsPressed(Button.A)) {
             поехали = 0
@@ -331,11 +331,11 @@ let питание = 0
 let Полигон_пройден = 0
 let белая = 0
 let черная = 0
-let мой_курс = 0
+let course = 0
 let поехали = 0
 let номер_полигона = 1
 поехали = 0
-мой_курс = 0
+course = 0
 черная = 1
 белая = 0
 StartbitV2.startbit_Init()
@@ -345,8 +345,10 @@ while (!(input.buttonIsPressed(Button.A))) {
     тест_датчиков()
     basic.pause(30)
 }
+while (input.buttonIsPressed(Button.A)) {
+	
+}
 basic.showNumber(номер_полигона)
-basic.pause(100)
 while (!(input.buttonIsPressed(Button.A))) {
     if (input.buttonIsPressed(Button.B)) {
         if (номер_полигона >= 9) {
@@ -358,6 +360,76 @@ while (!(input.buttonIsPressed(Button.A))) {
     }
 }
 поехали = 1
+let us1_lst = [
+25,
+25,
+25,
+25,
+25,
+15,
+25,
+25,
+25,
+15,
+15,
+25,
+25,
+15,
+15,
+25,
+15,
+25,
+15,
+25,
+15,
+25,
+15,
+15,
+25,
+25,
+25,
+15,
+15,
+15,
+25,
+25,
+25
+]
+let us2_lst = [
+15,
+15,
+25,
+25,
+15,
+15,
+15,
+15,
+15,
+15,
+15,
+15,
+25,
+15,
+15,
+15,
+25,
+15,
+25,
+15,
+25,
+25,
+15,
+15,
+15,
+25,
+15,
+25,
+15,
+15,
+15,
+15,
+15
+]
 basic.forever(function () {
     while (поехали == 1) {
         if (номер_полигона == 1) {
