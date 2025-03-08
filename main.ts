@@ -21,6 +21,27 @@ function тест_датчиков () {
             led.unplot(index11, 0)
         }
     }
+    питание = StartbitV2.startbit_getBatVoltage()
+    if (питание >= 3.55) {
+        led.plot(1, 1)
+    } else {
+        led.unplot(1, 1)
+    }
+    if (питание >= 3.6) {
+        led.plot(2, 1)
+    } else {
+        led.unplot(2, 1)
+    }
+    if (питание >= 3.65) {
+        led.plot(3, 1)
+    } else {
+        led.unplot(3, 1)
+    }
+    if (питание >= 3.7) {
+        led.plot(4, 1)
+    } else {
+        led.unplot(4, 1)
+    }
     if (StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.White)) {
         led.plot(1, 3)
         led.plot(1, 2)
@@ -154,12 +175,25 @@ function лабиринт_обратно () {
             поехали = 0
             break;
         }
-        мой_курс = list2.pop()
-        // мой_курс = list2.pop()
-        // мой_курс = list2.pop()
-        // мой_курс = list2.pop()
-        изменить_маршрут(-180)
-        проехать_вперед_до_перекрестка(1240)
+        мой_курс = 0
+        temp = list2.pop()
+        if (мой_курс == temp) {
+            проехать_вперед_до_перекрестка(1240)
+        } else {
+            if (temp - мой_курс > 0) {
+                StartbitV2.startbit_setMotorSpeed(80, -80)
+                basic.pause(1250)
+                проехать_вперед_до_перекрестка(1240)
+                мой_курс = temp
+            } else {
+                if (temp - мой_курс < 0) {
+                    StartbitV2.startbit_setMotorSpeed(-80, 80)
+                    basic.pause(1250)
+                    проехать_вперед_до_перекрестка(1240)
+                    мой_курс = temp
+                }
+            }
+        }
     }
 }
 function инверсия () {
@@ -229,7 +263,7 @@ function изменить_маршрут (num4: number) {
     if (мой_курс < 0) {
         мой_курс = мой_курс + 360
     }
-    if (мой_курс > 360) {
+    if (мой_курс >= 360) {
         мой_курс = мой_курс - 360
     }
 }
@@ -293,6 +327,7 @@ let s1 = false
 let s2 = false
 let s3 = false
 let s4 = false
+let питание = 0
 let Полигон_пройден = 0
 let белая = 0
 let черная = 0
@@ -308,13 +343,13 @@ StartbitV2.lineFollow_iic_init(StartbitV2.startbit_iic.port4)
 Полигон_пройден = 0
 while (!(input.buttonIsPressed(Button.A))) {
     тест_датчиков()
-    basic.pause(200)
+    basic.pause(30)
 }
 basic.showNumber(номер_полигона)
 basic.pause(100)
 while (!(input.buttonIsPressed(Button.A))) {
     if (input.buttonIsPressed(Button.B)) {
-        if (номер_полигона >= 7) {
+        if (номер_полигона >= 9) {
             номер_полигона = 1
         } else {
             номер_полигона += 1
@@ -331,30 +366,35 @@ basic.forever(function () {
             первый_полигон()
             if (поехали == 1) {
                 номер_полигона += 1
+                StartbitV2.startbit_setMotorSpeed(85, 85)
+                basic.pause(600)
+                StartbitV2.startbit_setMotorSpeed(0, 0)
+                basic.pause(200)
             } else {
                 continue;
             }
         } else if (номер_полигона == 2) {
             basic.showNumber(номер_полигона)
-            Старт()
             лабиринт_туда()
             if (поехали == 1) {
                 номер_полигона += 1
+                StartbitV2.startbit_setMotorSpeed(85, 85)
+                basic.pause(500)
             } else {
                 continue;
             }
         } else if (номер_полигона == 3) {
             basic.showNumber(номер_полигона)
-            Старт()
             инверсия()
             if (поехали == 1) {
                 номер_полигона += 1
+                StartbitV2.startbit_setMotorSpeed(85, 85)
+                basic.pause(300)
             } else {
                 continue;
             }
         } else if (номер_полигона == 4) {
             basic.showNumber(номер_полигона)
-            Старт()
             if (поехали == 1) {
                 номер_полигона += 1
             } else {
@@ -362,26 +402,55 @@ basic.forever(function () {
             }
         } else if (номер_полигона == 5) {
             basic.showNumber(номер_полигона)
-            Старт()
             инверсия()
             if (поехали == 1) {
                 номер_полигона += 1
+                StartbitV2.startbit_setMotorSpeed(85, 85)
+                basic.pause(600)
+                StartbitV2.startbit_setMotorSpeed(0, 0)
+                basic.pause(100)
             } else {
                 continue;
             }
         } else if (номер_полигона == 6) {
             basic.showNumber(номер_полигона)
-            Старт()
             лабиринт_обратно()
             if (поехали == 1) {
                 номер_полигона += 1
+                StartbitV2.startbit_setMotorSpeed(85, 85)
+                basic.pause(400)
+                StartbitV2.startbit_setMotorSpeed(0, 0)
+                basic.pause(100)
             } else {
                 continue;
             }
         } else if (номер_полигона == 7) {
             basic.showNumber(номер_полигона)
-            Старт()
             первый_полигон()
+        } else if (номер_полигона == 8) {
+            basic.showNumber(номер_полигона)
+            инверсия()
+            if (поехали == 1) {
+                номер_полигона = 9
+                StartbitV2.startbit_setMotorSpeed(85, 85)
+                basic.pause(500)
+                StartbitV2.startbit_setMotorSpeed(0, 0)
+                basic.pause(100)
+            } else {
+                continue;
+            }
+        } else if (false) {
+            basic.showNumber(номер_полигона)
+            лабиринт_туда()
+            if (поехали == 1) {
+                номер_полигона = 7
+                StartbitV2.startbit_setMotorSpeed(85, 85)
+                basic.pause(200)
+                StartbitV2.startbit_setMotorSpeed(0, 0)
+                basic.pause(100)
+            } else {
+                continue;
+            }
         }
     }
     StartbitV2.startbit_setMotorSpeed(0, 0)
@@ -390,7 +459,7 @@ basic.forever(function () {
     }
     while (!(input.buttonIsPressed(Button.A))) {
         if (input.buttonIsPressed(Button.B)) {
-            if (номер_полигона >= 7) {
+            if (номер_полигона >= 9) {
                 номер_полигона = 1
             } else {
                 номер_полигона += 1
