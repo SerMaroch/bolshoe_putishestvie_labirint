@@ -87,9 +87,9 @@ function по_линии (num2: number, speed: number) {
         if (s2 && s3) {
             StartbitV2.startbit_setMotorSpeed(speed, speed)
         } else if (!(s2) && s3) {
-            StartbitV2.startbit_setMotorSpeed(30, speed)
+            StartbitV2.startbit_setMotorSpeed(50, speed)
         } else if (!(s3) && s2) {
-            StartbitV2.startbit_setMotorSpeed(speed, 30)
+            StartbitV2.startbit_setMotorSpeed(speed, 50)
         }
     } else if (!(s1) && s4) {
         StartbitV2.startbit_setMotorSpeed(0 - speed, speed)
@@ -204,7 +204,7 @@ function инверсия () {
                     поехали = 0
                     break;
                 }
-                по_линии(белая, 65)
+                по_линии(белая, 75)
             }
         }
     }
@@ -215,7 +215,7 @@ function инверсия () {
                     поехали = 0
                     break;
                 }
-                по_линии(черная, 65)
+                по_линии(черная, 75)
             }
         }
     }
@@ -435,6 +435,16 @@ basic.forever(function () {
             }
         } else if (номер_полигона == 4) {
             basic.showNumber(номер_полигона)
+            StartbitV2.startbit_setMotorSpeed(85, 85)
+            basic.pause(500)
+            StartbitV2.startbit_setMotorSpeed(-85, 85)
+            basic.pause(300)
+            for (let index = 0; index < 4; index++) {
+                StartbitV2.startbit_setMotorSpeed(85, 85)
+                basic.pause(2000)
+                StartbitV2.startbit_setMotorSpeed(85, -85)
+                basic.pause(500)
+            }
             if (поехали == 1) {
                 номер_полигона += 1
             } else {
