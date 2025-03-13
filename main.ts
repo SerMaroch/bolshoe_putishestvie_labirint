@@ -197,58 +197,26 @@ function лабиринт_обратно () {
     }
 }
 function инверсия () {
-    for (let index = 0; index < 15; index++) {
-        while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.Black) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.Black))) {
-            if (input.buttonIsPressed(Button.A)) {
-                поехали = 0
-                break;
+    if (поехали == 1) {
+        for (let index = 0; index < 15; index++) {
+            while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.Black) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.Black))) {
+                if (input.buttonIsPressed(Button.A)) {
+                    поехали = 0
+                    break;
+                }
+                по_линии(белая, 65)
             }
-            по_линии(белая, 65)
         }
     }
-    for (let index = 0; index < 15; index++) {
-        while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.White) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.White))) {
-            if (input.buttonIsPressed(Button.A)) {
-                поехали = 0
-                break;
+    if (поехали == 1) {
+        for (let index = 0; index < 15; index++) {
+            while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.White) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.White))) {
+                if (input.buttonIsPressed(Button.A)) {
+                    поехали = 0
+                    break;
+                }
+                по_линии(черная, 65)
             }
-            по_линии(черная, 65)
-        }
-    }
-    for (let index = 0; index < 15; index++) {
-        while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.Black) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.Black))) {
-            if (input.buttonIsPressed(Button.A)) {
-                поехали = 0
-                break;
-            }
-            по_линии(белая, 65)
-        }
-    }
-    for (let index = 0; index < 15; index++) {
-        while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.White) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.White))) {
-            if (input.buttonIsPressed(Button.A)) {
-                поехали = 0
-                break;
-            }
-            по_линии(черная, 65)
-        }
-    }
-    for (let index = 0; index < 15; index++) {
-        while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.Black) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.Black))) {
-            if (input.buttonIsPressed(Button.A)) {
-                поехали = 0
-                break;
-            }
-            по_линии(белая, 65)
-        }
-    }
-    for (let index = 0; index < 15; index++) {
-        while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.White) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.White))) {
-            if (input.buttonIsPressed(Button.A)) {
-                поехали = 0
-                break;
-            }
-            по_линии(черная, 65)
         }
     }
 }
