@@ -152,10 +152,6 @@ function расстояние (num3: number) {
     }
 }
 function кегельринг () {
-    StartbitV2.setBusServo(2, 45, 0)
-    basic.pause(200)
-    StartbitV2.setBusServo(3, 90, 1000)
-    basic.pause(1000)
     while (StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.White)) {
         StartbitV2.startbit_setMotorSpeed(-92, -84)
     }
@@ -196,9 +192,13 @@ function проехать_вперед_до_перекрестка (num: number)
 function настройки_кегельринга () {
     первый_поворот = 30
     поворот_на_центр = 1200
+    захват_вверх = 85
+    захват_вниз = 179
+    захват_раскрыть = 179
+    захват_закрыть = 157
 }
 function настройки_первого_полигона () {
-    расстояние_до_преграды = 15
+    расстояние_до_преграды = 16
     время_измерения = 200
 }
 function лабиринт_обратно () {
@@ -371,10 +371,9 @@ function Старт () {
     basic.pause(500)
 }
 function настройки_лабиринта () {
-    длина_одной_клетки = 1240
-    поворот_на_90_по_час = 800
-    поворот_на_90_против_час = 800
-    расстояние_до_преграды = 15
+    длина_одной_клетки = 2500
+    поворот_на_90_по_час = 1100
+    поворот_на_90_против_час = 1100
 }
 function поиск_инверсии () {
     for (let index = 0; index < 3000; index++) {
@@ -465,17 +464,18 @@ function изменить_маршрут (num4: number) {
 function финиш_иверсии () {
     StartbitV2.startbit_setMotorSpeed(85, 85)
     basic.pause(300)
-    while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.Black) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.Black))) {
+    while (!(StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.Black) && StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.Black))) {
         StartbitV2.startbit_setMotorSpeed(92, 84)
     }
     StartbitV2.startbit_setMotorSpeed(0, 0)
-    StartbitV2.setBusServo(3, 180, 1000)
     basic.pause(1000)
-    while (StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.Black)) {
+    StartbitV2.setPwmServo(StartbitV2.startbit_servorange.range1, 3, захват_вниз, 500)
+    basic.pause(500)
+    while (StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.Black)) {
         StartbitV2.startbit_setMotorSpeed(-75, 75)
     }
     basic.pause(первый_поворот)
-    while (StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S1, StartbitV2.startbit_LineColor.White)) {
+    while (StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.White)) {
         StartbitV2.startbit_setMotorSpeed(92, 84)
     }
     basic.pause(500)
@@ -487,16 +487,21 @@ function финиш_иверсии () {
     basic.pause(100)
     StartbitV2.ultrasonic_init(StartbitV2.startbit_ultrasonicPort.port1)
     while (StartbitV2.startbit_ultrasonic() > 30) {
-        StartbitV2.startbit_setMotorSpeed(75, -75)
-        basic.pause(100)
+        StartbitV2.startbit_setMotorSpeed(85, -85)
+        basic.pause(200)
         StartbitV2.startbit_setMotorSpeed(0, 0)
         basic.pause(100)
     }
-    while (StartbitV2.startbit_ultrasonic() < 5) {
+    while (StartbitV2.startbit_ultrasonic() >= 5) {
         StartbitV2.startbit_setMotorSpeed(92, 84)
     }
+    basic.pause(300)
     StartbitV2.startbit_setMotorSpeed(0, 0)
     basic.pause(100)
+    StartbitV2.setPwmServo(StartbitV2.startbit_servorange.range1, 2, захват_закрыть, 200)
+    basic.pause(200)
+    StartbitV2.setPwmServo(StartbitV2.startbit_servorange.range1, 3, захват_вверх, 1000)
+    basic.pause(1000)
 }
 function лабиринт_туда () {
     Полигон_пройден = 0
@@ -540,13 +545,16 @@ function объезд_сложной_клетки () {
     basic.pause(700)
 }
 function объезд () {
-    StartbitV2.startbit_setMotorSpeed(-90, 90)
+    StartbitV2.startbit_setMotorSpeed(-100, 100)
     basic.pause(550)
-    StartbitV2.startbit_setMotorSpeed(80, 80)
+    StartbitV2.startbit_setMotorSpeed(100, 100)
     basic.pause(900)
-    StartbitV2.startbit_setMotorSpeed(90, -90)
-    basic.pause(1000)
+    StartbitV2.startbit_setMotorSpeed(100, -100)
+    basic.pause(600)
     StartbitV2.startbit_setMotorSpeed(85, 85)
+    basic.pause(300)
+    StartbitV2.startbit_setMotorSpeed(100, -100)
+    basic.pause(300)
     while (StartbitV2.startbit_line_followers(StartbitV2.startbit_LineFollowerSensors.S4, StartbitV2.startbit_LineColor.White)) {
         StartbitV2.startbit_setMotorSpeed(85, 85)
     }
@@ -558,6 +566,8 @@ let ULs1 = 0
 let поворот_на_90_против_час = 0
 let поворот_на_90_по_час = 0
 let длина_одной_клетки = 0
+let захват_закрыть = 0
+let захват_вниз = 0
 let поворот_на_центр = 0
 let первый_поворот = 0
 let list2: number[] = []
@@ -574,6 +584,8 @@ let s2 = false
 let s3 = false
 let s4 = false
 let питание = 0
+let захват_раскрыть = 0
+let захват_вверх = 0
 let Полигон_пройден = 0
 let белая = 0
 let черная = 0
@@ -610,6 +622,10 @@ while (!(input.buttonIsPressed(Button.A))) {
     }
 }
 поехали = 1
+StartbitV2.setPwmServo(StartbitV2.startbit_servorange.range1, 3, захват_вверх, 500)
+basic.pause(500)
+StartbitV2.setPwmServo(StartbitV2.startbit_servorange.range1, 2, захват_раскрыть, 500)
+basic.pause(500)
 basic.forever(function () {
     while (поехали == 1) {
         if (номер_полигона == 1) {
@@ -619,7 +635,7 @@ basic.forever(function () {
             if (поехали == 1) {
                 номер_полигона += 1
                 StartbitV2.startbit_setMotorSpeed(85, 85)
-                basic.pause(600)
+                basic.pause(1800)
                 StartbitV2.startbit_setMotorSpeed(0, 0)
                 basic.pause(200)
             } else {
@@ -659,7 +675,7 @@ basic.forever(function () {
             if (поехали == 1) {
                 номер_полигона += 1
                 StartbitV2.startbit_setMotorSpeed(85, 85)
-                basic.pause(600)
+                basic.pause(1800)
                 StartbitV2.startbit_setMotorSpeed(0, 0)
                 basic.pause(100)
             } else {
@@ -698,7 +714,7 @@ basic.forever(function () {
             if (поехали == 1) {
                 номер_полигона = 7
                 StartbitV2.startbit_setMotorSpeed(85, 85)
-                basic.pause(200)
+                basic.pause(1800)
                 StartbitV2.startbit_setMotorSpeed(0, 0)
                 basic.pause(100)
             } else {
